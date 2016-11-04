@@ -39,16 +39,21 @@ public class GlobalControllerExceptionHandler {
 	}
 
 
+	@ExceptionHandler(value = { MethodArgumentTypeMismatchException.class })
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	public @ResponseBody ApiErrorResponse handleInvalidParamException(Exception ex, WebRequest req) {
+		ApiErrorResponse apiErrorResponse = new ApiErrorResponse();
+		apiErrorResponse.setErrorMessage(ErrorMessage.InValidParamsError);			
+		apiErrorResponse.setDescription(ex.getMessage());
+		return apiErrorResponse;
+
+	}	
+	
 	@ExceptionHandler(value = { Exception.class })
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public @ResponseBody ApiErrorResponse unknownException(Exception ex, WebRequest req) {
 		ApiErrorResponse apiErrorResponse = new ApiErrorResponse();
-		if (ex instanceof MethodArgumentTypeMismatchException) {
-			apiErrorResponse.setErrorMessage(ErrorMessage.InValidParamsError);			
-		}
-		else {
-			apiErrorResponse.setErrorMessage(ErrorMessage.UnKnownError);
-		}
+		apiErrorResponse.setErrorMessage(ErrorMessage.UnKnownError);
 		apiErrorResponse.setDescription(ex.getMessage());
 		return apiErrorResponse;
 
