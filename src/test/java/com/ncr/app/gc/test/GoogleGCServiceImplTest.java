@@ -21,6 +21,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -146,6 +147,7 @@ public class GoogleGCServiceImplTest {
 	}
 
 	@TestConfiguration
+	@ComponentScan(basePackages = { "com.ncr.app" })
 	static class Config {
 
 		@Bean
