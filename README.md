@@ -12,7 +12,9 @@ NCR GeoCoding Assignment
 ** How to test ? **
 
 Use the below link to test the API
+
 http://localhost:8080/swagger-ui.html#!/gc-controller/getFormattedAddressUsingGET
 
 ** Note **
+
 In Lieu of the time constraint, I have provided just a basic implementation. This application is not production ready yet
