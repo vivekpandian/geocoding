@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.ncr.app.enumeration.ErrorMessage;
 import com.ncr.app.exception.GeoCodingException;
@@ -37,13 +38,20 @@ public class GlobalControllerExceptionHandler {
 
 	}
 
+
 	@ExceptionHandler(value = { Exception.class })
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public @ResponseBody ApiErrorResponse unknownException(Exception ex, WebRequest req) {
 		ApiErrorResponse apiErrorResponse = new ApiErrorResponse();
+		if (ex instanceof MethodArgumentTypeMismatchException) {
+			apiErrorResponse.setErrorMessage(ErrorMessage.InValidParamsError);			
+		}
+		else {
+			apiErrorResponse.setErrorMessage(ErrorMessage.UnKnownError);
+		}
 		apiErrorResponse.setDescription(ex.getMessage());
-		apiErrorResponse.setErrorMessage(ErrorMessage.UnKnownError);
 		return apiErrorResponse;
 
-	}
+	}	
+	
 }

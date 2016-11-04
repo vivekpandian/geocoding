@@ -1,5 +1,7 @@
 package com.ncr.app;
 
+import static springfox.documentation.builders.PathSelectors.regex;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.CacheManager;
@@ -16,8 +18,6 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
-import static springfox.documentation.builders.PathSelectors.regex;
 
 @SpringBootApplication
 @EnableCaching
@@ -46,9 +46,12 @@ public class GeocodingApplication {
 
 	@Bean
 	public Docket reverseGeoCodingApi() {
-		return new Docket(DocumentationType.SWAGGER_2).groupName("ReverseGeoCoding").apiInfo(apiInfo()).select()
+		return new Docket(DocumentationType.SWAGGER_2)
+				.useDefaultResponseMessages(false)
+				.groupName("ReverseGeoCoding").apiInfo(apiInfo()).select()
 				.paths(regex("/geocoding.*")).build();
 	}
+
 
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder().title("Reverse GeoCoding API").description("Reverse GeoCoding API").build();

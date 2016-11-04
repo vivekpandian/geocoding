@@ -12,6 +12,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -40,6 +41,7 @@ public class GoogleGCServiceImplTest {
 
 	@Before
 	public void setUp() {
+		MockitoAnnotations.initMocks(this);
 	}
 
 	@After
@@ -57,21 +59,23 @@ public class GoogleGCServiceImplTest {
 		} catch (GeoCodingException geoCodingException) {
 			// pass
 		}
+		reset(googleMapsGeoCodingClientMock);
 	}
 
 	@Test
 	public void testGetFormattedAddressWhenNoError() throws Exception {
-		Double validLat = 30.969601d;
-		Double validLng = -80.100033d;
-		LatLng validLatLng = new LatLng(validLat, validLng);
-		String addressForValidLatLng = "some street, some city, some state, some country";
+		Double validLat5 = 30.969601d;
+		Double validLng5 = -80.100033d;
+		LatLng validLatLng5 = new LatLng(validLat5, validLng5);
+		String addressForValidLatLng5 = "some street, some city, some state, some country";
 
 		// Valid case
-		given(this.googleMapsGeoCodingClientMock.getFormattedAddressForCoords(argThat(new LatLngMatcher(validLatLng))))
-				.willReturn(addressForValidLatLng);
+		given(this.googleMapsGeoCodingClientMock.getFormattedAddressForCoords(argThat(new LatLngMatcher(validLatLng5))))
+				.willReturn(addressForValidLatLng5);
 
-		String address = geoCodingService.getFormattedAddress(validLat, validLng);
-		Assert.assertEquals(addressForValidLatLng, address);
+		String address = geoCodingService.getFormattedAddress(validLat5, validLng5);
+		Assert.assertEquals(addressForValidLatLng5, address);
+		reset(googleMapsGeoCodingClientMock);
 	}
 
 	@Test
@@ -137,6 +141,7 @@ public class GoogleGCServiceImplTest {
 		// verify address3 is still in cache
 		verify(googleMapsGeoCodingClientMock, times(1))
 				.getFormattedAddressForCoords(argThat(new LatLngMatcher(validLatLng3)));
+		reset(googleMapsGeoCodingClientMock);
 
 	}
 

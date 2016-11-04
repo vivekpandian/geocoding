@@ -1,17 +1,17 @@
 package com.ncr.app.controller.gc;
 
-import static org.mockito.BDDMockito.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.isNull;
+import static org.mockito.Mockito.reset;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.internal.matchers.Any;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -65,6 +65,8 @@ public class GCControllerTest {
 				.willThrow(new GeoCodingException("Invalid Params"));
 		mockMvc.perform(get("/address").contentType(MediaType.APPLICATION_JSON).param("lat", "-0.0d"))
 				.andExpect(status().is5xxServerError()).andExpect(jsonPath("$.errorMessage").value("MissingParams"));
+		
+		reset(geoCodingService);
 
 	}
 
