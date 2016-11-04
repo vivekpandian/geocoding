@@ -1,4 +1,4 @@
-# geocoding
+# Geocoding
 NCR GeoCoding Assignment
 
 ** How to start the applicaion ? ** 
